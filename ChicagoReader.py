@@ -20,21 +20,22 @@ def get_category_winner(category_url):
     category = soup.find("h1", "headline").string
     winner = [h2.string for h2 in soup.findAll("h2", "boc1")]
     runners_up = [h2.string for h2 in soup.findAll("h2", "boc2")]
-    return {"category": category, "category_url": category_url, "winner": winner,
-    "runners_up": runners_up}
+    return {"category": category,
+            "category_url": category_url,
+            "winner": winner,
+            "runners_up": runners_up}
 
-if __name__ == "__main__":
-    food_n_drink = ("http://www.chicagoreader.com/chicago/best-of-chicago-2011-food-drink/BestOf?oid=4106228")
+if __name__ == '__main__':
+    food_n_drink = ("http://www.chicagoreader.com/chicago/"
+                    "best-of-chicago-2011-food-drink/BestOf?oid=4106228")
+    
     categories = get_category_links(food_n_drink)
-    data = []
+
+    data = [] # a list to store our dictionaries
     for category in categories:
         winner = get_category_winner(category)
         data.append(winner)
-        sleep(0.1) #introduce a time delay to not overload servers
+        sleep(0.1) # to make sure to not overload the servers
+
 
     print data
-
-
-
-
-
