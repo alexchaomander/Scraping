@@ -1,0 +1,46 @@
+<hr noshade>
+<font size="-1">Number of matching Manufacturers is 1127<br>
+Number of matching Products is 47535<br>
+Processing time was 62 seconds<br></font>
+
+<!----------------------------------------------------------------------------------------->
+<!-- All new listing footer stored in ListingsFooter.asp CHAO 02/11/2013-->
+
+		</div><!-- END OF CONTENT AREA -->
+	   
+			</div><!-- END OF CONTENT WRAPPER -->
+		</div>  <!-- END OF MAIN CONTENT AREA -->
+	
+             <!-- FOOTER --> 
+             <div id="footer" class="no_print">
+                <ul id="social-media">
+                    <li>
+                    	<h5>Connect with NSF</h5>
+                    </li>
+                    <li>
+                        <a class="lnk-external" rel="external" title="Twitter" href="http://twitter.com/#!/NSF_Intl ">
+                        <img width="20" height="20" alt="Twitter" src="/Certified/common/icon-twitter.jpg" />
+                        </a>
+                    </li>
+                    <li>
+                        <a class="lnk-external" rel="external" title="Facebook" href="http://www.facebook.com/pages/NSFInternational/112541432090898">
+                        <img width="20" height="20" alt="Facebook" src="/Certified/common/icon-facebook.jpg" />
+                        </a>
+                    </li>
+                    <li>
+                        <a class="lnk-external" rel="external" title="LinkedIn" href="http://www.linkedin.com/company/nsf-international">
+                        <img width="20" height="20" alt="LinkedIn" src="/Certified/common/icon-linkedin.jpg" />
+                        </a>
+                    </li>
+                    <li>
+                        <a class="lnk-external" rel="external" title="YouTube" href="http://www.youtube.com/user/NSFInternational">
+                        <img width="20" height="20" alt="YouTube" src="/Certified/common/icon-youtube.jpg" />
+                        </a>
+                    </li>
+               </ul>
+            <p class="copyright">&copy;2012 NSF International. All rights reserved.</p>
+             </div>
+             <!-- END OF FOOTER -->
+	    </div> <!-- END OF WRAPPER -->
+</body>
+</html>
