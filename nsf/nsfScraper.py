@@ -46,71 +46,78 @@ facility_attr = {
 	'size': '+1'
 }
 
-products = {}
-products['Trade Designation'] = []
-products['Product Function'] = []
-products['Max Use'] = []
-products['Company'] = []
-products['Facilities'] = []
-product_count_list = []
-facility_count_list = []
+facility_dict = {}
+for i in range(len(allFiles)):
 
-for i in range(1):
-
-	with open(allFiles[7], 'r') as f:
+	with open(allFiles[i], 'r') as f:
 
 		html = f.read()
 
 		soup = BeautifulSoup(html)
 
-		print html.split('font size="+1"')
+		facility_list = html.split('</table><br>')
 
+		for facility in facility_list:
+			#print facility
+			soup = BeautifulSoup(facility)
 
-		trade_links = get_data(soup, 'td', trade_designation_attr)
-		product_function_links = get_data(soup, 'td', product_function_attr)
-		max_use_links = get_data(soup, 'td', max_use_attr)
-		company_links = get_data(soup, 'font', company_attr)
-		facility_links = get_data(soup, 'font', facility_attr)
-		facility_count_list.append(len(facility_links))
+			products = {}
+			products['Trade Designation'] = []
+			products['Product Function'] = []
+			products['Max Use'] = []
+			products['Company'] = []
 
-		company_count = 0
+			trade_links = get_data(soup, 'td', trade_designation_attr)
+			product_function_links = get_data(soup, 'td', product_function_attr)
+			max_use_links = get_data(soup, 'td', max_use_attr)
+			company_links = get_data(soup, 'font', company_attr)
+			facility_links = get_data(soup, 'font', facility_attr)
+			#facility_count_list.append(len(facility_links))
 
-		for link in trade_links:
-			text = link.get_text()
-			if text not in products.keys():
-				products['Trade Designation'].append(text)
-				company_count += 1
+			company_count = 0
+			facility_count = 0
 
-		product_count_list.append(company_count)
-		for link in product_function_links:
-			text = link.get_text()
-			if text not in products.keys():
-				products['Product Function'].append(text)
-
-		for link in max_use_links:
-			text = link.get_text()
-			if text not in products.keys():
-				products['Max Use'].append(text)
-
-		for link in company_links:
-			text = link.get_text()
-			for _ in range(company_count):
+			for link in trade_links:
+				text = link.get_text()
 				if text not in products.keys():
-					products['Company'].append(text)
+					products['Trade Designation'].append(text)
+					company_count += 1
 
-		for link in facility_links:
-			text = link.get_text()
-			for _ in range(facility_count_list[i]):
-				products['Facilities'].append(text)
+			#product_count_list.append(company_count)
+			for link in product_function_links:
+				text = link.get_text()
+				if text not in products.keys():
+					products['Product Function'].append(text)
+
+			for link in max_use_links:
+				text = link.get_text()
+				if text not in products.keys():
+					products['Max Use'].append(text)
+
+			for link in company_links:
+				text = link.get_text()
+				for _ in range(company_count):
+					if text not in products.keys():
+						products['Company'].append(text)
+
+			for link in facility_links:
+				text = link.get_text()
+				facility_dict[text] = products
   		bar.next()
 bar.finish()
 
-print "Trade Designation: " + str(len(products['Trade Designation']))
-print "Product Function: " + str(len(products['Product Function']))
-print "Max Use: " + str(len(products['Max Use']))
-print "Company: " + str(len(products['Company']))
-print "Facility: " + str(len(products['Facilities']))
+# print "Trade Designation: " + str(len(products['Trade Designation']))
+# print "Product Function: " + str(len(products['Product Function']))
+# print "Max Use: " + str(len(products['Max Use']))
+# print "Company: " + str(len(products['Company']))
+# print "Facility: " + str(len(products['Facilities']))
 print " "
+
+#print "Facility as key: " + str(facility_dict.keys())
+print "St Louis: " + str(facility_dict['Facility : #  2 Baton Rouge, LA'])
+print "Number of keys: " + str(len(facility_dict.keys()))
+
+
 # print products['Trade Designation'][0:20]
 # print " "
 # print products['Product Function'][0:20]
@@ -120,7 +127,6 @@ print " "
 # print products['Company'][0:20]
 # print " "
 #print products['Facilities']
-print facility_count_list, sum(facility_count_list), len(facility_count_list)
 
 ##SOME COMPANIES HAVE MULTIPLE FACILITIES
 
