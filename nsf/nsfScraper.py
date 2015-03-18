@@ -55,15 +55,15 @@ products['Facilities'] = []
 product_count_list = []
 facility_count_list = []
 
-for i in range(1):
+for i in range(len(allFiles)):
 
-	with open(allFiles[7], 'r') as f:
+	with open(allFiles[i], 'r') as f:
 
 		html = f.read()
 
 		soup = BeautifulSoup(html)
 
-		print html.split('font size="+1"')
+		#print html.split('font size="+1"')
 
 
 		trade_links = get_data(soup, 'td', trade_designation_attr)
@@ -120,7 +120,7 @@ print " "
 # print products['Company'][0:20]
 # print " "
 #print products['Facilities']
-print facility_count_list, sum(facility_count_list), len(facility_count_list)
+#print facility_count_list, sum(facility_count_list), len(facility_count_list)
 
 ##SOME COMPANIES HAVE MULTIPLE FACILITIES
 
