@@ -52,6 +52,7 @@ products['Product Function'] = []
 products['Max Use'] = []
 products['Company'] = []
 products['Facilities'] = []
+products['Certification'] = []
 product_count_list = []
 facility_count_list = []
 
@@ -62,9 +63,6 @@ for i in range(len(allFiles)):
 		html = f.read()
 
 		soup = BeautifulSoup(html)
-
-		#print html.split('font size="+1"')
-
 
 		trade_links = get_data(soup, 'td', trade_designation_attr)
 		product_function_links = get_data(soup, 'td', product_function_attr)
@@ -100,43 +98,69 @@ for i in range(len(allFiles)):
 
 		for link in facility_links:
 			text = link.get_text()
-			for _ in range(facility_count_list[i]):
-				products['Facilities'].append(text)
+			products['Facilities'].append(text)
+		for _ in range(company_count):
+			products['Certification'].append('NSF/ANSI 60')
+
   		bar.next()
 bar.finish()
+
+print " "
+
+# print "Doing facilities:"
+# facilities_bar = Bar('Processing', max=len(allFiles))
+# for i in range(len(allFiles)):
+
+# 	with open(allFiles[i], 'r') as f:
+
+# 		html = f.read()
+
+# 		soup = BeautifulSoup(html)
+
+# 		facility_list = html.split('</table><br>')
+
+# 		for facility in facility_list:
+# 			#print facility
+# 			soup = BeautifulSoup(facility)
+# 			trade_links = get_data(soup, 'td', trade_designation_attr)
+# 			facility_links = get_data(soup, 'font', facility_attr)
+
+# 			facility_count = 0
+# 			for link in trade_links:
+# 				text = link.get_text()
+# 				if text not in products.keys():
+# 					facility_count += 1
+
+# 			for link in facility_links:
+# 				for _ in range(facility_count):
+# 					text = link.get_text()
+# 					products['Facilities'].append(text)
+#   		facilities_bar.next()
+# facilities_bar.finish()
 
 print "Trade Designation: " + str(len(products['Trade Designation']))
 print "Product Function: " + str(len(products['Product Function']))
 print "Max Use: " + str(len(products['Max Use']))
 print "Company: " + str(len(products['Company']))
 print "Facility: " + str(len(products['Facilities']))
-print " "
-# print products['Trade Designation'][0:20]
-# print " "
-# print products['Product Function'][0:20]
-# print " "
-# print products['Max Use'][0:20]
-# print " "
-# print products['Company'][0:20]
-# print " "
-#print products['Facilities']
-#print facility_count_list, sum(facility_count_list), len(facility_count_list)
 
-##SOME COMPANIES HAVE MULTIPLE FACILITIES
+########## WRITING TO CSV ##############
 
-#print product_count_list, sum(product_count_list)
+print "Writing to csv: "
+writingBar = Bar('Processing', max=len(products['Trade Designation']))
 
-# soup = BeautifulSoup (open("43rd-congress.html"))
-
-# final_link = soup.p.a
-# final_link.decompose()
-
-# f = csv.writer(open("43rd_Congress.csv", "w"))
-# f.writerow(["Name", "Link"])    # Write column headers as the first line
-
-# links = soup.find_all('a')
-# for link in links:
-#     names = link.contents[0]
-#     fullLink = link.get('href')
-
-#     f.writerow([names,fullLink]
+f = csv.writer(open("../data/chemicals.csv", "w"))
+f.writerow(["Trade Designation", "Product Function", "Max Use", "Company", "Facility", "Certification"])    # Write column headers as the first line
+for i in range(len(products['Trade Designation'])):
+	trade = products['Trade Designation'][i].encode('utf-8')
+	funct = products['Product Function'][i].encode('utf-8')
+	maxUse = products['Max Use'][i].encode('utf-8')
+	company = products['Company'][i].encode('utf-8')
+	if i < len(products['Facilities']):
+		facilities = products['Facilities'][i].encode('utf-8')
+	else:
+		facilities = 'N/A'
+	certification = products['Certification'][i].encode('utf-8')
+	f.writerow([trade,funct,maxUse,company,facilities, certification])
+	writingBar.next()
+writingBar.finish()
