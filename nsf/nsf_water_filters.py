@@ -134,11 +134,8 @@ for i in range(len(allFiles)):
 					products['Company'].append(text)
 
 		for link in facility_links:
-
 			text = link.get_text()
-			if i < len(facility_count_list):
-				for _ in range(facility_count_list[i]):
-					products['Facilities'].append(text)
+			products['Facilities'].append(text)
 
 		for _ in range(company_count):
 			products['Certification'].append('NSF/ANSI 42')
