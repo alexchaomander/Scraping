@@ -44,12 +44,13 @@ def check_nan(s):
 	if type(x) is not str:
 		return np.isnan(s)
 
-synonyms = [x for x in glossary['Synonyms'] if not check_nan(x)]
-keyWords = [x for x in glossary['Key Words'] if not check_nan(x)]
-terms = synonyms + keyWords
-#print terms
+#Getting all the terms from the sparse matrix glossary
+terms = []
+for col in list(glossary.columns):
+	terms += [x for x in set(glossary[col]) if not check_nan(x)]
 
-for i in range(1):
+bar = Bar('Processing', max=len(allFiles))
+for i in range(len(allFiles)):
 	allSentences = []
 	for j in range(len(terms)):
 		path = allFiles[i]
@@ -58,5 +59,20 @@ for i in range(1):
 			sentences = document.split(". ")
 			relevant_sentences = [clean_up(x) for x in sentences if terms[j] in x.lower()]
 			allSentences += relevant_sentences
-	print allSentences
+	bar.next()
+	#Writing to sentences to text file
+	fullPath = allFiles[i].split("/")
+	CSR_folder = fullPath[0]
+	company_name = fullPath[1]
+	corpusName = fullPath[2]
+	corpusPath = CSR_folder + "/" + company_name + "/" + corpusName
+	newpath = r"/Users/pbio/Desktop/CSR_text/sentences/" + company_name
+	outputPath = r'/Users/pbio/Desktop/CSR_text/sentences/' + company_name + "/" + corpusName + "_sentences"
+	if not os.path.exists(newpath):
+		print " Making a new path"
+		os.makedirs(newpath)
+	for line in allSentences:
+		with open(outputPath, 'w') as f:
+			f.write("%s\n" % line)
+bar.finish()
 
