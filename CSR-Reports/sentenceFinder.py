@@ -8,6 +8,18 @@ import gspread
 #Credentials to login to Google Sheets
 from credentials import GOOGLE_LOGIN, GOOGLE_PASS, GOOGLE_SHEET
 
+"""
+Extracts sentences from text files that match a predefined glossary of terms/phrases.
+Outputs them into `SENTENCEFOLDER`
+
+To run: 
+`python sentenceFinder.py` in the directory that has the folder of interest. 
+(i.e. folder containing the text corpuses.)
+"""
+
+SENTENCEFOLDER = "sentences/"
+
+#Connecting to the Google Sheet that contains the glossary
 gc = gspread.login(GOOGLE_LOGIN, GOOGLE_PASS)
 wb = gc.open_by_key(GOOGLE_SHEET)
 ws = wb.worksheet('Sheet1')
@@ -18,7 +30,9 @@ headers = sheet.pop(0)
 glossary = pd.DataFrame(sheet, columns=headers)
 
 #The folder that contains all the text files for CSR reports
-folderName = "corpus2"
+FOLDERNAME = "corpus2"
+if not os.path.exists(FOLDERNAME):
+	os.makedirs(FOLDERNAME)
 
 # List of all file paths
 allFiles = []
@@ -30,7 +44,7 @@ def find_files(directory, pattern):
                 allFiles.append(filename)
                 yield filename
 
-for filename in find_files(folderName, '*corpus'):
+for filename in find_files(FOLDERNAME, '*corpus'):
 	continue
 
 def clean_up(sentence):
@@ -50,6 +64,9 @@ for col in list(glossary.columns):
 	terms += [x for x in set(glossary[col]) if not check_nan(x)]
 
 bar = Bar('Processing', max=len(allFiles))
+
+saveFolderPath = r"/Users/pbio/Desktop/CSR_text/" + SENTENCEFOLDER
+
 for i in range(len(allFiles)):
 	allSentences = []
 	for j in range(len(terms)):
@@ -66,13 +83,15 @@ for i in range(len(allFiles)):
 	company_name = fullPath[1]
 	corpusName = fullPath[2]
 	corpusPath = CSR_folder + "/" + company_name + "/" + corpusName
-	newpath = r"/Users/pbio/Desktop/CSR_text/sentences/" + company_name
-	outputPath = r'/Users/pbio/Desktop/CSR_text/sentences/' + company_name + "/" + corpusName + "_sentences"
+	newpath = saveFolderPath + company_name
+	outputPath = saveFolderPath + company_name + "/" + corpusName + "_sentences"
+
+	#Creating company directories if they don't already exist
 	if not os.path.exists(newpath):
 		print " Making a new path"
 		os.makedirs(newpath)
+
 	for line in allSentences:
 		with open(outputPath, 'w') as f:
 			f.write("%s\n" % line)
 bar.finish()
-
