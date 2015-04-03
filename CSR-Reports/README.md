@@ -31,3 +31,6 @@ Outputs them into `SENTENCEFOLDER`
 To run: 
 `python sentenceFinder.py` in the directory that has the folder of interest. 
 (i.e. folder containing the text corpuses.)
+
+## explore.R
+Outputs a folder of gram frequencies and word clouds for each folder's corpus of text
