@@ -68,16 +68,10 @@ bar = Bar('Processing', max=len(allFiles))
 saveFolderPath = r"/Users/pbio/Desktop/CSR_text/" + SENTENCEFOLDER
 
 for i in range(len(allFiles)):
-	allSentences = []
-	for j in range(len(terms)):
-		path = allFiles[i]
-		with open(path, 'r') as f:
-			document = f.read()
-			sentences = document.split(". ")
-			relevant_sentences = [clean_up(x) for x in sentences if terms[j] in x.lower()]
-			allSentences += relevant_sentences
+
 	bar.next()
-	#Writing to sentences to text file
+	
+	#Creating the paths to write to text file
 	fullPath = allFiles[i].split("/")
 	CSR_folder = fullPath[0]
 	company_name = fullPath[1]
@@ -86,12 +80,25 @@ for i in range(len(allFiles)):
 	newpath = saveFolderPath + company_name
 	outputPath = saveFolderPath + company_name + "/" + corpusName + "_sentences"
 
-	#Creating company directories if they don't already exist
-	if not os.path.exists(newpath):
-		print " Making a new path"
-		os.makedirs(newpath)
+	#Checking if the sentence corpus already exists
+	if not os.path.exists(outputPath):
+		#Creating a list of all the sentences
+		allSentences = []
+		for j in range(len(terms)):
+			path = allFiles[i]
+			with open(path, 'r') as f:
+				document = f.read()
+				sentences = document.split(". ")
+				relevant_sentences = [clean_up(x) for x in sentences if terms[j] in x.lower()]
+				allSentences += relevant_sentences
 
-	for line in allSentences:
-		with open(outputPath, 'w') as f:
-			f.write("%s\n" % line)
-bar.finish()
+		#Creating company directories if they don't already exist
+		if not os.path.exists(newpath):
+			print " Making a new path"
+			os.makedirs(newpath)
+
+		#Writing files
+		for line in allSentences:
+			with open(outputPath, 'w') as f:
+				f.write("%s\n" % line)
+	bar.finish()

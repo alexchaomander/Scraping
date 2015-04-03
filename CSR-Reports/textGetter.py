@@ -56,6 +56,7 @@ for i in range(len(allFiles)):
 		print " Making a new path"
 		os.makedirs(newpath)
 	if not os.path.exists(outputPath):
+		print " Creating the corpus"
 		process = subprocess.Popen('pdf2txt.py "{}" > "{}"'.format(pdfPath, outputPath), shell=True)
 		process.wait()
 	bar.next()
