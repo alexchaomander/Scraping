@@ -19,11 +19,14 @@ To run:
 `python textGetter.py` in the directory that has the folder of interest. 
 (i.e. folder containing the folder CSRs)
 
+Define the folder of interest by setting FOLDER_CONTAINING_PDFS 
+
 Will create a folder in the current directory called `FOLDERNAME` that contains
 directories of companies with the text of the PDFs saved in text files for each company.
 """
 
-FOLDERNAME = "corpus2/"
+FOLDERNAME = "corpus/"
+FOLDER_CONTAINING_PDFS = "PCRs"
 
 if not os.path.exists(FOLDERNAME):
 	os.makedirs(FOLDERNAME)
@@ -39,7 +42,7 @@ def find_files(directory, pattern):
                 allFiles.append(filename)
                 yield filename
 
-for filename in find_files('CSRs', '*.pdf'):
+for filename in find_files(FOLDER_CONTAINING_PDFS, '*.pdf'):
 	continue
 
 bar = Bar('Processing', max=len(allFiles))
