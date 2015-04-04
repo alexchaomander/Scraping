@@ -18,6 +18,7 @@ To run:
 """
 
 SENTENCEFOLDER = "sentences/"
+saveFolderPath = r"/Users/pbio/Desktop/PCR_text/" + SENTENCEFOLDER
 
 #Connecting to the Google Sheet that contains the glossary
 gc = gspread.login(GOOGLE_LOGIN, GOOGLE_PASS)
@@ -64,8 +65,6 @@ for col in list(glossary.columns):
 	terms += [x for x in set(glossary[col]) if not check_nan(x)]
 
 bar = Bar('Processing', max=len(allFiles))
-
-saveFolderPath = r"/Users/pbio/Desktop/CSR_text/" + SENTENCEFOLDER
 
 for i in range(len(allFiles)):
 
