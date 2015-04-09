@@ -1,27 +1,29 @@
 ## Reading in text files into R
-currentDirectory = "~/Desktop/PCR_text"
-setwd(currentDirectory)
+setwd("~/Desktop/CSR_text")
 source("~/Desktop/ClusteringCrowdfunding/createTDM.R")
 source("~/Desktop/ClusteringCrowdfunding/createWordCloud.R")
 source("~/Desktop/ClusteringCrowdfunding/createGramFrequency.R")
-allFiles = list.files("corpus/", recursive = T)
+allFiles = list.files("corpus2/", recursive = T)
 
 wordCloudCreator = function(filePath, ngrams) {
-  f = paste("corpus/", filePath, sep="")
+  f = paste("corpus2/", filePath, sep="")
   a = readChar(f, file.info(f)$size)
   corpus = data.frame(Words = a, stringsAsFactors = F)
   fullPath = strsplit(filePath, "/")
   company = fullPath[[1]][1]
   corpusName = fullPath[[1]][2]
-  directory = paste("clouds/", company, sep="")
-  dir.create(paste(currentDirectory, directory ,sep = ""), showWarnings = FALSE)
-  png(filename=paste("clouds/", company, "/", corpusName, "_", "Cloud", "_", ngrams,"-gram", sep=""))
-  createWordCloud(corpus$Words, "text", ngrams)
-  dev.off()
+  directory = paste("clouds2/", company, sep="")
+  dir.create(directory, showWarnings = FALSE)
+  fname = paste("clouds2/", company, "/", corpusName, "_", "Cloud", "_", ngrams,"-gram", sep="")
+  if (!file.exists(fname)) {
+    png(filename=fname)
+    createWordCloud(corpus$Words, "text", ngrams)
+    dev.off()
+  }
 }
 
 gramFrequencyCreator = function(filePath, ngrams) {
-  f = paste("corpus/", filePath, sep="")
+  f = paste("corpus2/", filePath, sep="")
   a = readChar(f, file.info(f)$size)
   corpus = data.frame(Words = a, stringsAsFactors = F)
   TDM = createTDM(corpus$Words, "text", ngrams)
@@ -36,6 +38,8 @@ gramFrequencyCreator = function(filePath, ngrams) {
 for (i in 1:length(allFiles)) {
   for (j in 1:2) {
     
+    print(i)
+    
     #Creating the word clouds
     try(wordCloudCreator(allFiles[i], j))
     
@@ -43,10 +47,12 @@ for (i in 1:length(allFiles)) {
     fullPath = strsplit(allFiles[i], "/")
     company = fullPath[[1]][1]
     corpusName = fullPath[[1]][2]
-    directory = paste("gramFrequency/", company, sep="")
-    dir.create(paste(currentDirectory, directory, sep = ""), showWarnings = FALSE)
-    fileName = paste("gramFrequency/", company, "/", corpusName, "_", j, "-Gram", "_", "Frequency.csv", sep = "")
-    write.csv(gramFrequencyCreator(allFiles[i], j), file = fileName)
+    directory = paste("gramFrequency2/", company, sep="")
+    dir.create(directory, showWarnings = FALSE)
+    fileName = paste("gramFrequency2/", company, "/", corpusName, "_", j, "-Gram", "_", "Frequency.csv", sep = "")
+    if (!file.exists(fileName)) {
+      write.csv(gramFrequencyCreator(allFiles[i], j), file = fileName)
+    }
   }
 }
 
