@@ -18,12 +18,11 @@ To run:
 """
 
 SENTENCEFOLDER = "sentences/"
-saveFolderPath = r"/Users/pbio/Desktop/PCR_text/" + SENTENCEFOLDER
 
 #Connecting to the Google Sheet that contains the glossary
 gc = gspread.login(GOOGLE_LOGIN, GOOGLE_PASS)
 wb = gc.open_by_key(GOOGLE_SHEET)
-ws = wb.worksheet('Sheet1')
+ws = wb.worksheet('Benefit')
 sheet = ws.get_all_values()
 headers = sheet.pop(0)
 
@@ -66,6 +65,8 @@ for col in list(glossary.columns):
 
 bar = Bar('Processing', max=len(allFiles))
 
+saveFolderPath = r"/Users/pbio/Desktop/CSR_text/" + SENTENCEFOLDER
+
 for i in range(len(allFiles)):
 
 	bar.next()
@@ -97,7 +98,7 @@ for i in range(len(allFiles)):
 			os.makedirs(newpath)
 
 		#Writing files
-		for line in allSentences:
-			with open(outputPath, 'w') as f:
+		with open(outputPath, 'w') as f:
+			for line in allSentences:
 				f.write("%s\n" % line)
 	bar.finish()
